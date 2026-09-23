@@ -14,7 +14,17 @@ export function xlsxDate(v) {
   return null;
 }
 
-export const xnum = (v) => (typeof v === "number" && isFinite(v) ? v : null);
+export const xnum = (v) => {
+  if (typeof v === "number" && isFinite(v)) return v;
+  if (typeof v === "string" && v.trim()) {
+    const t = v.trim();
+    if (/^-?[\d.]+$/.test(t)) return parseFloat(t.replace(/\./g, ""));       // "1.929.000" -> 1929000
+    if (/^-?[\d,]+$/.test(t)) return parseFloat(t.replace(/,/g, ""));         // "1,929,000"
+    const n = parseFloat(t.replace(/\./g, "").replace(",", "."));             // campuran
+    if (isFinite(n) && /^\s*-?[\d.,]+\s*$/.test(t)) return n;
+  }
+  return null;
+};
 
 export const xstr = (v) => {
   if (v == null) return null;
@@ -66,6 +76,18 @@ export function extractWorkbook(wb) {
       score: xnum(r[18]), siswa: xnum(r[19]), omset_week: xnum(r[20]),
       alasan: xstr(r[21]), historis: xstr(r[22]),
       week_visit: xnum(r[23]), hari_visit: xstr(r[24]),
+      /* hasil dealing */
+      bulan_status: xstr(r[25]),
+      takeover: xstr(r[30]), kompetitor: xstr(r[31]),
+      tgl_visit: xlsxDate(r[32]), noo_status: xstr(r[33]),
+      tgl_deal: xlsxDate(r[34]), week_deal: xnum(r[35]),
+      alasan_proses: xstr(r[37]),
+      bbbrbl: xstr(r[38]), brand: xstr(r[39]),
+      start: xlsxDate(r[42]), end: xlsxDate(r[43]),
+      kompensasi_deal: xnum(r[44]), branding_deal: xnum(r[45]), total_deal: xnum(r[46]),
+      kode_outlet: xstr(r[53]), kode_subdist: xstr(r[54]),
+      omset26: Array.from({ length: 12 }, (_, i) => xnum(r[55 + i]) || 0),
+      total26: xnum(r[67]),
     });
   }
 

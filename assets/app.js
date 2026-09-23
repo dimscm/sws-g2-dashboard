@@ -179,9 +179,142 @@ noo.forEach(mkSearch);
 renderDashboard();
 initExtTable();
 initNooTable();
+renderPencapaian();
 renderCatatan();
 renderUploadMeta();
 initUpload();
+
+/* ================= PENCAPAIAN ================= */
+function brandGroup(b) {
+  if (!b) return null;
+  const s = b.toUpperCase();
+  const lm = /LE\s*MINERALE|LEMINE|\bLM\b|GALON/.test(s);
+  const tp = /TEH\s*PUCUK|PUCUK|\bTPH\b|KOTAK|TETRA/.test(s);
+  const nm = /NIPIS/.test(s);
+  const brands = [lm && "LE MINERALE", tp && "TEH PUCUK HARUM", nm && "NIPIS MADU"].filter(Boolean);
+  if (brands.length > 1) return "DUA BRAND";
+  return brands[0] || s;
+}
+ext.forEach((r) => { r.brand_grp = brandGroup(r.brand); });
+noo.forEach((r) => { r.brand_grp = brandGroup(r.brand); });
+
+function renderPencapaian() {
+  const els = {
+    region: document.getElementById("achRegion"),
+    channel: document.getElementById("achChannel"),
+    kontrak: document.getElementById("achKontrak"),
+    brand: document.getElementById("achBrand"),
+    jenis: document.getElementById("achJenis"),
+    prioritas: document.getElementById("achPrioritas"),
+  };
+  const fill = (sel, values) => [...values].sort().forEach((v) => sel.add(new Option(v, v)));
+  fill(els.region, new Set([...ext, ...noo].map((r) => r.region).filter(Boolean)));
+  fill(els.channel, new Set([...ext, ...noo].map((r) => r.channel).filter(Boolean)));
+  fill(els.kontrak, new Set([...ext, ...noo].map((r) => r.bbbrbl).filter(Boolean)));
+  fill(els.brand, new Set([...ext, ...noo].map((r) => r.brand_grp).filter(Boolean)));
+  fill(els.jenis, new Set([...ext, ...noo].map((r) => r.jenis).filter(Boolean)));
+
+  const match = (r, usePrioritas) =>
+    (!els.region.value || r.region === els.region.value) &&
+    (!els.channel.value || r.channel === els.channel.value) &&
+    (!els.kontrak.value || r.bbbrbl === els.kontrak.value) &&
+    (!els.brand.value || r.brand_grp === els.brand.value) &&
+    (!els.jenis.value || r.jenis === els.jenis.value) &&
+    (!usePrioritas || !els.prioritas.value || r.prioritas === els.prioritas.value);
+
+  const extStatus = (r) => {
+    const h = (r.hasil_visit || "").toUpperCase();
+    if (!h) return "BELUM";
+    if (h.includes("NO DEAL")) return "NO DEAL";
+    if (h.includes("DEAL")) return "DEAL";
+    if (h.includes("PROSES")) return "PROSES";
+    return "BELUM";
+  };
+  const nooStatus = (r) => {
+    const h = (r.noo_status || "").toUpperCase();
+    if (!h) return "BELUM";
+    if (h.includes("NO DEAL")) return "NO DEAL";
+    if (h.includes("DEAL")) return "DEAL";
+    if (h.includes("PROSES")) return "PROSES";
+    return "BELUM";
+  };
+
+  const aggregate = (rows, statusFn) => {
+    const order = ["DEAL", "PROSES", "NO DEAL", "BELUM"];
+    const per = {};
+    for (const r of rows) {
+      const reg = r.region || "-";
+      per[reg] ||= { DEAL: 0, PROSES: 0, "NO DEAL": 0, BELUM: 0 };
+      per[reg][statusFn(r)]++;
+    }
+    const regions = Object.keys(per).sort((a, b) =>
+      (per[b].DEAL + per[b].PROSES + per[b]["NO DEAL"] + per[b].BELUM) - (per[a].DEAL + per[a].PROSES + per[a]["NO DEAL"] + per[a].BELUM));
+    return { regions, order, per };
+  };
+
+  const stackedOpts = {
+    indexAxis: "y",
+    responsive: true,
+    scales: {
+      x: { stacked: true, title: { display: true, text: "Outlet" } },
+      y: { stacked: true },
+    },
+    plugins: {
+      legend: { position: "bottom" },
+      tooltip: {
+        callbacks: {
+          footer: (items) => {
+            const reg = items[0].label;
+            const tot = items.reduce((a, i) => a + i.parsed.x, 0);
+            const deal = items.find((i) => i.dataset.label === "DEAL")?.parsed.x || 0;
+            return `Total ${tot} · Deal ${tot ? Math.round((deal / tot) * 100) : 0}%`;
+          },
+        },
+      },
+    },
+  };
+  const mkDatasets = (agg) => agg.order.map((s) => ({
+    label: s === "BELUM" ? "BELUM DIVISIT" : s,
+    data: agg.regions.map((r) => agg.per[r][s]),
+    backgroundColor: { DEAL: "#16a34a", PROSES: "#d97706", "NO DEAL": "#dc2626", BELUM: "#94a3b8" }[s],
+  }));
+
+  const chartExt = new Chart(document.getElementById("chartAchExt"), { type: "bar", data: { labels: [], datasets: [] }, options: stackedOpts });
+  const chartNoo = new Chart(document.getElementById("chartAchNoo"), { type: "bar", data: { labels: [], datasets: [] }, options: stackedOpts });
+
+  function apply() {
+    const eRows = ext.filter((r) => match(r, false));
+    const nRows = noo.filter((r) => match(r, true));
+    const ea = aggregate(eRows, extStatus);
+    const na = aggregate(nRows, nooStatus);
+    chartExt.data.labels = ea.regions;
+    chartExt.data.datasets = mkDatasets(ea);
+    chartExt.update();
+    chartNoo.data.labels = na.regions;
+    chartNoo.data.datasets = mkDatasets(na);
+    chartNoo.update();
+
+    const pct = (rows, fn) => {
+      const t = rows.length;
+      const d = rows.filter((r) => fn(r) === "DEAL").length;
+      return { t, d, pct: t ? Math.round((d / t) * 100) : 0 };
+    };
+    const pe = pct(eRows, extStatus), pn = pct(nRows, nooStatus);
+    document.getElementById("achKpi").innerHTML = [
+      { label: "Outlet EXT Terfilter", value: fmtNum(pe.t), sub: "basis perpanjangan" },
+      { label: "Deal Perpanjangan", value: fmtNum(pe.d), sub: `${pe.pct}% dari terfilter` },
+      { label: "Outlet NOO Terfilter", value: fmtNum(pn.t), sub: "basis pencapaian NOO" },
+      { label: "Deal NOO", value: fmtNum(pn.d), sub: `${pn.pct}% dari terfilter` },
+    ].map((c) => `<div class="kpi"><div class="label">${c.label}</div><div class="value">${c.value}</div><div class="sub">${c.sub}</div></div>`).join("");
+  }
+
+  Object.values(els).forEach((el) => el.addEventListener("input", apply));
+  document.getElementById("achReset").addEventListener("click", () => {
+    Object.values(els).forEach((el) => { el.value = ""; });
+    apply();
+  });
+  apply();
+}
 
 /* ================= DASHBOARD ================= */
 function renderDashboard() {

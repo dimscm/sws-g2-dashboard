@@ -23,6 +23,7 @@
       <button class="tab active" data-tab="dashboard">Dashboard</button>
       <button class="tab" data-tab="ext">Outlet Ext (EXT)</button>
       <button class="tab" data-tab="noo">Sasaran Baru (NOO)</button>
+      <button class="tab" data-tab="pencapaian">Pencapaian</button>
       <button class="tab" data-tab="catatan">Catatan Update</button>
       <button class="tab" data-tab="update">Update Data</button>
     </nav>
@@ -143,6 +144,32 @@
       </table>
     </div>
     <div class="loadmore"><button id="nooMore" class="btn">Muat lebih banyak</button></div>
+  </section>
+
+  <!-- ============ PENCAPAIAN ============ -->
+  <section id="pencapaian" class="page">
+    <div class="toolbar">
+      <select id="achRegion"><option value="">Semua Region</option></select>
+      <select id="achChannel"><option value="">Semua Channel</option></select>
+      <select id="achKontrak"><option value="">Semua Kontrak</option></select>
+      <select id="achBrand"><option value="">Semua Brand</option></select>
+      <select id="achJenis"><option value="">Semua Jenis Outlet</option></select>
+      <select id="achPrioritas"><option value="">Prioritas &amp; Tidak (NOO)</option><option>PRIORITAS</option><option>TIDAK PRIORITAS</option></select>
+      <button class="btn btn-ghost" id="achReset" type="button">Reset Filter</button>
+    </div>
+
+    <div class="kpi-grid" id="achKpi"></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Pencapaian Perpanjangan Kontrak per Region <span class="card-tag">EXT</span></h3>
+        <canvas id="chartAchExt"></canvas>
+      </div>
+      <div class="card">
+        <h3>Pencapaian NOO per Region <span class="card-tag">NOO</span></h3>
+        <canvas id="chartAchNoo"></canvas>
+      </div>
+    </div>
   </section>
 
   <!-- ============ CATATAN ============ -->

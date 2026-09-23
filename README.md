@@ -7,6 +7,7 @@ Dashboard monitoring statis untuk data **SWS W36 - G2 Master Update 7 Area** (ti
 - **Dashboard** — KPI (outlet EXT, sasaran NOO, nilai kompensasi, omset), grafik per region, status visit perpanjangan, masa berlaku kontrak, omset bulanan, komposisi brand, historis NOO.
 - **Outlet Ext (EXT)** — tabel 2.706 outlet kontrak: cari (nama/alamat/AFPS/PIC), filter region, status visit, masa kontrak; kolom bisa di-sort.
 - **Sasaran Baru (NOO)** — tabel 5.151 sasaran outlet: filter prioritas & kategori KPI.
+- **Pencapaian** — grafik stacked per region untuk perpanjangan kontrak (EXT) dan pencapaian NOO (Deal/Proses/No Deal/Belum), dengan filter region, channel, jenis kontrak (BB/BR/BL), brand, jenis outlet, dan prioritas.
 - **Catatan Update** — log perubahan mingguan (perpindahan AFPS, perubahan prioritas, dll).
 - **Update Data** — upload file Excel SWS minggu baru langsung di website; dashboard dihitung ulang otomatis di browser dan tersimpan di browser itu (IndexedDB). Tanpa perlu Python/server.
 
