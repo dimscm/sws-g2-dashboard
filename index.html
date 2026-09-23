@@ -6,6 +6,7 @@
 <title>SWS G2 Dashboard — W36 Master Update 7 Area</title>
 <link rel="stylesheet" href="assets/style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -15,7 +16,7 @@
       <span class="brand-mark">G2</span>
       <div>
         <h1>SWS G2 Dashboard</h1>
-        <p class="subtitle">Master Update 7 Area &middot; Week 36 &middot; <span id="generated"></span></p>
+        <p class="subtitle">Master Update 7 Area &middot; <span id="generated"></span></p>
       </div>
     </div>
     <nav class="tabs" id="tabs">
@@ -23,6 +24,7 @@
       <button class="tab" data-tab="ext">Outlet Ext (EXT)</button>
       <button class="tab" data-tab="noo">Sasaran Baru (NOO)</button>
       <button class="tab" data-tab="catatan">Catatan Update</button>
+      <button class="tab" data-tab="update">Update Data</button>
     </nav>
   </div>
 </header>
@@ -38,7 +40,7 @@
         <canvas id="chartRegion"></canvas>
       </div>
       <div class="card">
-        <h3>Status Hasil Visit Perpanjangan 2026</h3>
+        <h3>Status Hasil Visit Perpanjangan</h3>
         <canvas id="chartVisit"></canvas>
       </div>
     </div>
@@ -147,10 +149,28 @@
   <section id="catatan" class="page">
     <div id="catatanList"></div>
   </section>
+
+  <!-- ============ UPDATE DATA ============ -->
+  <section id="update" class="page">
+    <div class="card upload-card">
+      <h3>Update Data dari File Excel</h3>
+      <p class="card-note" style="margin:0 0 14px">
+        Upload file <code>.xlsx</code> SWS terbaru — dashboard langsung dihitung ulang di browser ini.
+        Kolom nomor telepon PIC tetap otomatis dibuang.
+      </p>
+      <div class="dropzone" id="dropzone">
+        <p><strong>Seret file Excel ke sini</strong> atau</p>
+        <input type="file" id="fileInput" accept=".xlsx,.xls" hidden>
+        <button class="btn" id="pickFile" type="button">Pilih File</button>
+        <p class="card-note" id="uploadStatus">Belum ada file diproses.</p>
+      </div>
+      <div class="upload-meta" id="uploadMeta"></div>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">
-  <p>Sumber: SWS_W36_-_G2_MASTER_UPDATE_7_AREA_FINAL.xlsx &middot; Kolom nomor telepon PIC tidak dipublikasikan.</p>
+  <p>Sumber: <span id="footerSource">SWS_W36_-_G2_MASTER_UPDATE_7_AREA_FINAL.xlsx</span> &middot; Kolom nomor telepon PIC tidak dipublikasikan.</p>
 </footer>
 
 <script type="module" src="assets/app.js"></script>

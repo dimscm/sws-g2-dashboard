@@ -1,7 +1,8 @@
-/* SWS G2 Dashboard — logika utama */
+/* SWS G2 Dashboard — logika utama + upload Excel client-side */
 "use strict";
 
-const TODAY = new Date();
+import { extractWorkbook } from "./extract.js";
+
 const PAGE_SIZE = 100;
 
 const fmtRp = (v) => {
@@ -15,18 +16,16 @@ const esc = (s) => (s == null ? "" : String(s).replace(/[&<>"']/g, (c) => ({ "&"
 
 function daysUntil(iso) {
   if (!iso) return null;
-  const d = new Date(iso + "T00:00:00");
-  return Math.round((d - TODAY) / 86400000);
+  return Math.round((new Date(iso + "T00:00:00") - Date.now()) / 86400000);
 }
 
 function expiryBadge(iso) {
   const d = daysUntil(iso);
   if (d == null) return `<span class="badge exp-gray">-</span>`;
-  const tgl = iso;
-  if (d < 0) return `<span class="badge exp-red">${tgl} · kedaluwarsa</span>`;
-  if (d <= 60) return `<span class="badge exp-red">${tgl} · ${d} hari</span>`;
-  if (d <= 180) return `<span class="badge exp-amber">${tgl} · ${d} hari</span>`;
-  return `<span class="badge exp-green">${tgl} · ${d} hari</span>`;
+  if (d < 0) return `<span class="badge exp-red">${iso} · kedaluwarsa</span>`;
+  if (d <= 60) return `<span class="badge exp-red">${iso} · ${d} hari</span>`;
+  if (d <= 180) return `<span class="badge exp-amber">${iso} · ${d} hari</span>`;
+  return `<span class="badge exp-green">${iso} · ${d} hari</span>`;
 }
 
 function visitBadge(status) {
@@ -38,7 +37,127 @@ function visitBadge(status) {
   return `<span class="badge belum">${esc(s)}</span>`;
 }
 
-/* ---------- Tabs ---------- */
+/* ================= IndexedDB (simpan hasil upload) ================= */
+const idb = {
+  db: null,
+  open() {
+    return new Promise((res, rej) => {
+      const req = indexedDB.open("sws-g2", 1);
+      req.onupgradeneeded = () => req.result.createObjectStore("kv");
+      req.onsuccess = () => { idb.db = req.result; res(); };
+      req.onerror = () => rej(req.error);
+    });
+  },
+  set(k, v) {
+    return new Promise((res, rej) => {
+      const t = idb.db.transaction("kv", "readwrite");
+      t.objectStore("kv").put(v, k);
+      t.oncomplete = res; t.onerror = () => rej(t.error);
+    });
+  },
+  get(k) {
+    return new Promise((res) => {
+      const t = idb.db.transaction("kv", "readonly");
+      const req = t.objectStore("kv").get(k);
+      req.onsuccess = () => res(req.result ?? null);
+      req.onerror = () => res(null);
+    });
+  },
+  clear() {
+    return new Promise((res) => {
+      const t = idb.db.transaction("kv", "readwrite");
+      t.objectStore("kv").clear();
+      t.oncomplete = res; t.onerror = res;
+    });
+  },
+};
+
+/* ================= Load data: upload (IDB) atau bawaan ================= */
+let META = null;
+
+async function loadData() {
+  await idb.open();
+  const meta = await idb.get("meta");
+  if (meta) {
+    const [summary, ext, noo, catatan] = await Promise.all([
+      idb.get("summary"), idb.get("ext"), idb.get("noo"), idb.get("catatan"),
+    ]);
+    if (summary && ext && noo && catatan) {
+      META = { ...meta, source: "upload" };
+      return { summary, ext, noo, catatan };
+    }
+  }
+  META = { source: "bundled", file: "SWS_W36_-_G2_MASTER_UPDATE_7_AREA_FINAL.xlsx" };
+  const load = async (u) => { const r = await fetch(u); if (!r.ok) throw new Error("Gagal memuat " + u); return r.json(); };
+  return {
+    summary: await load("data/summary.json"),
+    ext: await load("data/ext.json"),
+    noo: await load("data/noo.json"),
+    catatan: await load("data/catatan.json"),
+  };
+}
+
+/* ================= Upload handler ================= */
+function initUpload() {
+  const dz = document.getElementById("dropzone");
+  const input = document.getElementById("fileInput");
+  const status = document.getElementById("uploadStatus");
+  document.getElementById("pickFile").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => input.files[0] && handleFile(input.files[0]));
+  dz.addEventListener("dragover", (e) => { e.preventDefault(); dz.classList.add("over"); });
+  dz.addEventListener("dragleave", () => dz.classList.remove("over"));
+  dz.addEventListener("drop", (e) => {
+    e.preventDefault(); dz.classList.remove("over");
+    const f = e.dataTransfer.files[0];
+    if (f) handleFile(f);
+  });
+
+  async function handleFile(file) {
+    try {
+      status.textContent = `Membaca ${file.name} ...`;
+      const buf = await file.arrayBuffer();
+      const wb = XLSX.read(buf, { type: "array", cellDates: true });
+      for (const req of ["EXT", "NOO"]) {
+        if (!wb.Sheets[req]) throw new Error(`Sheet "${req}" tidak ditemukan di file.`);
+      }
+      status.textContent = "Mengekstrak & menghitung ulang data ...";
+      await new Promise((r) => setTimeout(r, 30)); // biarkan UI update
+      const data = extractWorkbook(wb);
+      if (!data.ext.length || !data.noo.length) throw new Error("Data outlet kosong — cek struktur file.");
+      status.textContent = `OK: ${data.ext.length} EXT, ${data.noo.length} NOO. Menyimpan ...`;
+      await idb.set("summary", data.summary);
+      await idb.set("ext", data.ext);
+      await idb.set("noo", data.noo);
+      await idb.set("catatan", data.catatan);
+      await idb.set("meta", { file: file.name, uploadedAt: new Date().toISOString() });
+      location.reload();
+    } catch (err) {
+      status.textContent = "Gagal: " + err.message;
+    }
+  }
+}
+
+function renderUploadMeta() {
+  const el = document.getElementById("uploadMeta");
+  const src = document.getElementById("footerSource");
+  if (META.source === "upload") {
+    const t = new Date(META.uploadedAt);
+    src.textContent = META.file + " (upload)";
+    document.getElementById("generated").textContent = "Data upload · " + t.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+    el.innerHTML = `
+      <p><strong>Data aktif:</strong> ${esc(META.file)}</p>
+      <p>Diupload: ${t.toLocaleString("id-ID")} · tersimpan di browser ini.</p>
+      <button class="btn btn-danger" id="resetData" type="button">Kembali ke Data Bawaan (W36)</button>`;
+    el.querySelector("#resetData").addEventListener("click", async () => {
+      await idb.clear();
+      location.reload();
+    });
+  } else {
+    el.innerHTML = `<p><strong>Data aktif:</strong> bawaan dari server (W36). Upload file Excel baru untuk mengganti.</p>`;
+  }
+}
+
+/* ================= Tabs ================= */
 document.getElementById("tabs").addEventListener("click", (e) => {
   const btn = e.target.closest(".tab");
   if (!btn) return;
@@ -46,31 +165,23 @@ document.getElementById("tabs").addEventListener("click", (e) => {
   document.querySelectorAll(".page").forEach((p) => p.classList.toggle("active", p.id === btn.dataset.tab));
 });
 
-/* ---------- Load data ---------- */
-async function loadJSON(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("Gagal memuat " + url);
-  return res.json();
+/* ================= Boot ================= */
+const { summary, ext, noo, catatan } = await loadData();
+
+if (META.source === "bundled") {
+  document.getElementById("generated").textContent = "Week 36 · Data per " + new Date(summary.generated).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
 }
-
-const [summary, ext, noo, catatan] = await Promise.all([
-  loadJSON("data/summary.json"),
-  loadJSON("data/ext.json"),
-  loadJSON("data/noo.json"),
-  loadJSON("data/catatan.json"),
-]);
-
-document.getElementById("generated").textContent = "Data per " + new Date(summary.generated).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
-
-/* efektif: tanggal berakhir kontrak terbaru */
 ext.forEach((r) => { r.endEff = r.end_new || r.end; r.endSort = daysUntil(r.endEff) ?? 99999; });
-noo.forEach((r) => { r.search = `${r.outlet || ""} ${r.alamat || ""} ${r.afps || ""} ${r.pic || ""}`.toLowerCase(); });
-ext.forEach((r) => { r.search = `${r.outlet || ""} ${r.alamat || ""} ${r.afps || ""} ${r.pic || ""}`.toLowerCase(); });
+const mkSearch = (r) => { r.search = `${r.outlet || ""} ${r.alamat || ""} ${r.afps || ""} ${r.pic || ""}`.toLowerCase(); };
+ext.forEach(mkSearch);
+noo.forEach(mkSearch);
 
 renderDashboard();
 initExtTable();
 initNooTable();
 renderCatatan();
+renderUploadMeta();
+initUpload();
 
 /* ================= DASHBOARD ================= */
 function renderDashboard() {
@@ -93,11 +204,11 @@ function renderDashboard() {
       labels: regions.map(([r]) => r),
       datasets: [
         { type: "bar", label: "Jumlah Outlet", data: regions.map(([, v]) => v.count), backgroundColor: "#0ea5e9", yAxisID: "y" },
-        { type: "line", label: "Kompensasi (M Rp)", data: regions.map(([, v]) => Math.round(v.kompensasi / 1e6)), borderColor: "#d97706", backgroundColor: "#d97706", yAxisID: "y1", tension: .3 },
+        { type: "line", label: "Kompensasi (jt Rp)", data: regions.map(([, v]) => Math.round(v.kompensasi / 1e6)), borderColor: "#d97706", backgroundColor: "#d97706", yAxisID: "y1", tension: .3 },
       ],
     },
     options: {
-      responsive: true, maintainAspectRatio: true,
+      responsive: true,
       scales: {
         y: { position: "left", title: { display: true, text: "Outlet" } },
         y1: { position: "right", grid: { drawOnChartArea: false }, title: { display: true, text: "Kompensasi (jt Rp)" } },
@@ -134,7 +245,7 @@ function renderDashboard() {
     data: {
       labels,
       datasets: [
-        { label: "2025", data: monthly.map((m) => m.omset), borderColor: "#0ea5e9", backgroundColor: "rgba(14,165,233,.12)", fill: true, tension: .3 },
+        { label: "Omset", data: monthly.map((m) => m.omset), borderColor: "#0ea5e9", backgroundColor: "rgba(14,165,233,.12)", fill: true, tension: .3 },
       ],
     },
     options: {

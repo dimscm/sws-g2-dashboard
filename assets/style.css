@@ -232,6 +232,24 @@ td .sub { font-size: 12px; color: var(--text-muted); }
 .note-block:last-child { border-bottom: none; }
 .note-sheet.collapsed .note-body { display: none; }
 
+/* ---------- Upload / dropzone ---------- */
+.upload-card { max-width: 720px; }
+.dropzone {
+  border: 2px dashed #94a3b8;
+  border-radius: var(--radius);
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  transition: .15s;
+}
+.dropzone.over { border-color: var(--primary); background: #f0f9ff; color: var(--text); }
+.dropzone p { margin-bottom: 12px; }
+.dropzone .btn { margin-bottom: 12px; }
+.upload-meta { margin-top: 16px; font-size: 13.5px; color: var(--text); }
+.upload-meta p { margin-bottom: 6px; }
+.btn-danger { background: var(--red); margin-top: 8px; }
+.btn-danger:hover { background: #991b1b; }
+
 .footer {
   text-align: center;
   color: var(--text-muted);

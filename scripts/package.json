@@ -1,0 +1,6 @@
+{
+  "name": "sws-g2-scripts",
+  "private": true,
+  "type": "module",
+  "dependencies": { "xlsx": "^0.18.5" }
+}
