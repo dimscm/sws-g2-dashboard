@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWS G2 Dashboard — W36 Master Update 7 Area</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">G2</span>
+      <div>
+        <h1>SWS G2 Dashboard</h1>
+        <p class="subtitle">Master Update 7 Area &middot; Week 36 &middot; <span id="generated"></span></p>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="ext">Outlet Ext (EXT)</button>
+      <button class="tab" data-tab="noo">Sasaran Baru (NOO)</button>
+      <button class="tab" data-tab="catatan">Catatan Update</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ============ DASHBOARD ============ -->
+  <section id="dashboard" class="page active">
+    <div class="kpi-grid" id="kpiGrid"></div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Outlet &amp; Nilai Kontrak per Region</h3>
+        <canvas id="chartRegion"></canvas>
+      </div>
+      <div class="card">
+        <h3>Status Hasil Visit Perpanjangan 2026</h3>
+        <canvas id="chartVisit"></canvas>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Masa Berlaku Kontrak (dari hari ini)</h3>
+        <canvas id="chartExpiry"></canvas>
+        <p class="card-note">Berdasarkan tanggal berakhir kontrak terbaru (kontrak new bila ada).</p>
+      </div>
+      <div class="card">
+        <h3>Omset Bulanan Outlet EXT</h3>
+        <canvas id="chartOmset"></canvas>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Komposisi Brand</h3>
+        <canvas id="chartBrand"></canvas>
+      </div>
+      <div class="card">
+        <h3>NOO per Region</h3>
+        <canvas id="chartNooRegion"></canvas>
+      </div>
+      <div class="card">
+        <h3>Historis Visit NOO</h3>
+        <canvas id="chartNooHistoris"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXT ============ -->
+  <section id="ext" class="page">
+    <div class="toolbar">
+      <input type="search" id="extSearch" placeholder="Cari nama outlet / alamat / AFPS / PIC...">
+      <select id="extRegion"><option value="">Semua Region</option></select>
+      <select id="extStatus">
+        <option value="">Semua Status Visit</option>
+        <option>DEAL</option><option>NO DEAL</option><option>PROSES</option><option>BELUM DIVISIT</option>
+      </select>
+      <select id="extExp">
+        <option value="">Semua Masa Kontrak</option>
+        <option value="expired">Sudah berakhir</option>
+        <option value="d30">&le; 30 hari</option>
+        <option value="d60">&le; 60 hari</option>
+        <option value="d90">&le; 90 hari</option>
+        <option value="d180">&le; 180 hari</option>
+        <option value="later">&gt; 180 hari</option>
+      </select>
+      <span class="toolbar-info" id="extCount"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="outlet">Outlet</th>
+            <th data-sort="region">Region / Kota</th>
+            <th data-sort="jenis">Jenis</th>
+            <th data-sort="brand">Brand</th>
+            <th data-sort="afps">AFPS</th>
+            <th data-sort="endSort">Berakhir Kontrak</th>
+            <th data-sort="kompensasi" class="num">Kompensasi</th>
+            <th data-sort="hasil_visit">Status Visit</th>
+          </tr>
+        </thead>
+        <tbody id="extBody"></tbody>
+      </table>
+    </div>
+    <div class="loadmore"><button id="extMore" class="btn">Muat lebih banyak</button></div>
+  </section>
+
+  <!-- ============ NOO ============ -->
+  <section id="noo" class="page">
+    <div class="toolbar">
+      <input type="search" id="nooSearch" placeholder="Cari nama outlet / alamat / AFPS / PIC...">
+      <select id="nooRegion"><option value="">Semua Region</option></select>
+      <select id="nooPrioritas">
+        <option value="">Prioritas &amp; Tidak</option>
+        <option>PRIORITAS</option><option>TIDAK PRIORITAS</option>
+      </select>
+      <select id="nooKategori"><option value="">Semua Kategori KPI</option></select>
+      <span class="toolbar-info" id="nooCount"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="outlet">Outlet</th>
+            <th data-sort="region">Region / Kota</th>
+            <th data-sort="jenis">Jenis</th>
+            <th data-sort="prioritas">Prioritas</th>
+            <th data-sort="kategori_kpi">Kategori KPI</th>
+            <th data-sort="rating" class="num">Rating</th>
+            <th data-sort="week_visit" class="num">Visit (Wk/Hari)</th>
+            <th>Historis</th>
+          </tr>
+        </thead>
+        <tbody id="nooBody"></tbody>
+      </table>
+    </div>
+    <div class="loadmore"><button id="nooMore" class="btn">Muat lebih banyak</button></div>
+  </section>
+
+  <!-- ============ CATATAN ============ -->
+  <section id="catatan" class="page">
+    <div id="catatanList"></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>Sumber: SWS_W36_-_G2_MASTER_UPDATE_7_AREA_FINAL.xlsx &middot; Kolom nomor telepon PIC tidak dipublikasikan.</p>
+</footer>
+
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>

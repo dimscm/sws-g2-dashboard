@@ -1,0 +1,597 @@
+{
+ "generated": "2026-09-23",
+ "kpi": {
+  "total_ext": 2706,
+  "total_noo": 5151,
+  "total_kompensasi": 32430548674,
+  "total_omset_2025": 76959066544,
+  "total_omset_2026": 46223128585,
+  "takeover": 185,
+  "prioritas_noo": 2550
+ },
+ "per_region": {
+  "JAKARTA BARAT": {
+   "kompensasi": 2539248632,
+   "total25": 1943670837,
+   "total26": 1490659502,
+   "count": 560
+  },
+  "JAKUT - JAKTIM 1": {
+   "kompensasi": 2292811500,
+   "total25": 2480600128,
+   "total26": 2078186206,
+   "count": 541
+  },
+  "TANGBAN": {
+   "kompensasi": 4388784848,
+   "total25": 57216281691,
+   "total26": 29066096232,
+   "count": 435
+  },
+  "JAKSEL - DEPOK": {
+   "kompensasi": 3194986000,
+   "total25": 4424170945,
+   "total26": 4519597092,
+   "count": 351
+  },
+  "CIBOSI": {
+   "kompensasi": 12830445509,
+   "total25": 5567112285,
+   "total26": 5287123117,
+   "count": 317
+  },
+  "JAKPUS": {
+   "kompensasi": 5992461685,
+   "total25": 2833902825,
+   "total26": 2237146239,
+   "count": 297
+  },
+  "BEKASI KOTA - JAKTIM 2": {
+   "kompensasi": 1191810500,
+   "total25": 2493327833,
+   "total26": 1544320197,
+   "count": 205
+  }
+ },
+ "per_kota": {
+  "JAKARTA BARAT": {
+   "kompensasi": 2538548632,
+   "count": 559
+  },
+  "JAKARTA UTARA": {
+   "kompensasi": 2850662500,
+   "count": 483
+  },
+  "JAKARTA PUSAT": {
+   "kompensasi": 5205066685,
+   "count": 193
+  },
+  "KABUPATEN BOGOR": {
+   "kompensasi": 12074550799,
+   "count": 170
+  },
+  "JAKARTA TIMUR": {
+   "kompensasi": 230244000,
+   "count": 163
+  },
+  "JAKSEL": {
+   "kompensasi": 811320000,
+   "count": 155
+  },
+  "KOTA BOGOR": {
+   "kompensasi": 755894710,
+   "count": 146
+  },
+  "BEKASI": {
+   "kompensasi": 521600500,
+   "count": 141
+  },
+  "TANGERANG KOTA": {
+   "kompensasi": 178598000,
+   "count": 94
+  },
+  "DEPOK": {
+   "kompensasi": 195566000,
+   "count": 83
+  },
+  "JAKARTA TIMUR 2": {
+   "kompensasi": 670210000,
+   "count": 64
+  },
+  "TANGERANG SELATAN": {
+   "kompensasi": 110120000,
+   "count": 64
+  },
+  "JAKSEL REG 4": {
+   "kompensasi": 432600000,
+   "count": 60
+  },
+  "TANGKAB REG 1": {
+   "kompensasi": 1345516848,
+   "count": 59
+  },
+  "JAKSEL REG 3": {
+   "kompensasi": 1745500000,
+   "count": 52
+  },
+  "TANGSEL REG 2": {
+   "kompensasi": 2496400000,
+   "count": 51
+  },
+  "TANGSEL REG 3": {
+   "kompensasi": 67600000,
+   "count": 45
+  },
+  "SERANG": {
+   "kompensasi": 82420000,
+   "count": 41
+  },
+  "RANGKASBITUNG": {
+   "kompensasi": 21000000,
+   "count": 23
+  },
+  "CILEGON": {
+   "kompensasi": 19675000,
+   "count": 16
+  },
+  "PANDEGLANG": {
+   "kompensasi": 32000000,
+   "count": 14
+  },
+  "SERANG BANTEN REG 1": {
+   "kompensasi": 30255000,
+   "count": 9
+  },
+  "CIKANDE": {
+   "kompensasi": 500000,
+   "count": 8
+  },
+  "BANTEN REG 2": {
+   "kompensasi": 1500000,
+   "count": 4
+  },
+  "RANGKAS": {
+   "kompensasi": 0,
+   "count": 4
+  },
+  "TANGKAB REG 2": {
+   "kompensasi": 2000000,
+   "count": 1
+  },
+  "TANGKAB REG 3": {
+   "kompensasi": 1200000,
+   "count": 1
+  },
+  "BALARAJA": {
+   "kompensasi": 0,
+   "count": 1
+  },
+  "KAB BOGOR": {
+   "kompensasi": 0,
+   "count": 1
+  },
+  "-": {
+   "kompensasi": 10000000,
+   "count": 1
+  }
+ },
+ "per_jenis": {
+  "RESTO REGULAR": {
+   "kompensasi": 8125268897,
+   "count": 2025
+  },
+  "BAKSO MIE AYAM": {
+   "kompensasi": 1016531000,
+   "count": 409
+  },
+  "FOODCOURT LUAR MALL": {
+   "kompensasi": 7742869417,
+   "count": 54
+  },
+  "SMA/SMK": {
+   "kompensasi": 95878000,
+   "count": 49
+  },
+  "SPORT": {
+   "kompensasi": 267205400,
+   "count": 22
+  },
+  "YAYASAN": {
+   "kompensasi": 114605000,
+   "count": 20
+  },
+  "PUBLIC TRANSPORT": {
+   "kompensasi": 767398750,
+   "count": 20
+  },
+  "SMP": {
+   "kompensasi": 23842000,
+   "count": 16
+  },
+  "AMUSEMENT PARK": {
+   "kompensasi": 989250000,
+   "count": 14
+  },
+  "HANGOUT PLACES": {
+   "kompensasi": 1154244000,
+   "count": 13
+  },
+  "RESTO MAKANAN LOKAL": {
+   "kompensasi": 17140000,
+   "count": 13
+  },
+  "UNIVERSITAS": {
+   "kompensasi": 111612500,
+   "count": 11
+  },
+  "DTW/POI": {
+   "kompensasi": 10498298710,
+   "count": 7
+  },
+  "-": {
+   "kompensasi": 0,
+   "count": 7
+  },
+  "SOTO SATE": {
+   "kompensasi": 51000000,
+   "count": 6
+  },
+  "WISATA BERMAIN/PARK": {
+   "kompensasi": 61380000,
+   "count": 4
+  },
+  "ALUN ALUN/LANDMARK": {
+   "kompensasi": 16000000,
+   "count": 2
+  },
+  "SEAFOOD": {
+   "kompensasi": 60000000,
+   "count": 2
+  },
+  "REST AREA": {
+   "kompensasi": 1200000000,
+   "count": 2
+  },
+  "KULINER MALL": {
+   "kompensasi": 45000000,
+   "count": 1
+  },
+  "DTW": {
+   "kompensasi": 12350000,
+   "count": 1
+  },
+  "WISATA BERMAIN / PARK": {
+   "kompensasi": 19500000,
+   "count": 1
+  },
+  "FOODCOURT DALAM MALL": {
+   "kompensasi": 0,
+   "count": 1
+  },
+  "TOKO/RETAIL": {
+   "kompensasi": 5000000,
+   "count": 1
+  },
+  "SMP, SMA": {
+   "kompensasi": 5175000,
+   "count": 1
+  },
+  "SMP/SMA/SMK": {
+   "kompensasi": 1000000,
+   "count": 1
+  },
+  "RESTO REGULER": {
+   "kompensasi": 30000000,
+   "count": 1
+  },
+  "SO": {
+   "kompensasi": 0,
+   "count": 1
+  },
+  "RETAIL": {
+   "kompensasi": 0,
+   "count": 1
+  }
+ },
+ "per_brand": {
+  "TEH PUCUK HARUM": {
+   "kompensasi": 12714354256,
+   "count": 1844
+  },
+  "LE MINERALE": {
+   "kompensasi": 7233693418,
+   "count": 821
+  },
+  "NIPIS MADU": {
+   "kompensasi": 70151000,
+   "count": 28
+  },
+  "-": {
+   "kompensasi": 0,
+   "count": 7
+  },
+  "LE MINERALE, TEH PUCUK HARUM": {
+   "kompensasi": 1212350000,
+   "count": 2
+  },
+  "LM GALON": {
+   "kompensasi": 0,
+   "count": 1
+  },
+  "LM, TPH": {
+   "kompensasi": 1200000000,
+   "count": 1
+  },
+  "LE MINERALE & TEHPUCUKHARUM": {
+   "kompensasi": 10000000000,
+   "count": 1
+  },
+  "LE MINERALE GALON": {
+   "kompensasi": 0,
+   "count": 1
+  }
+ },
+ "noo_per_region": {
+  "TANGBAN": {
+   "count": 1349
+  },
+  "JAKSEL - DEPOK": {
+   "count": 1011
+  },
+  "JAKARTA BARAT": {
+   "count": 912
+  },
+  "JAKPUS": {
+   "count": 567
+  },
+  "CIBOSI": {
+   "count": 550
+  },
+  "BEKASI KOTA - JAKTIM 2": {
+   "count": 432
+  },
+  "JAKUT - JAKTIM 1": {
+   "count": 330
+  }
+ },
+ "noo_per_kategori": {
+  "NOO KULINER LEGEND LM": {
+   "count": 2349
+  },
+  "NOO KULINER LEGEND TPH": {
+   "count": 956
+  },
+  "NOO KULINER BAKSO TPH": {
+   "count": 662
+  },
+  "NOO SMA/SMP TPH": {
+   "count": 387
+  },
+  "-": {
+   "count": 338
+  },
+  "NOO FOODCOURT MALL TPH": {
+   "count": 74
+  },
+  "BUNDLING KULINER ANAK MUDA NM": {
+   "count": 70
+  },
+  "NOO SPORT (Badminton, Soccer, Padel)": {
+   "count": 61
+  },
+  "NOO FOODCOURT MALL LM": {
+   "count": 52
+  },
+  "NOO UNIVERSITAS LM": {
+   "count": 46
+  },
+  "NOO SPORT(Badminton, Soccer, Padel) LM": {
+   "count": 38
+  },
+  "NOO SMA/SMP NM": {
+   "count": 23
+  },
+  "NOO SMP/SMA TPH": {
+   "count": 21
+  },
+  "DTW/POI": {
+   "count": 15
+  },
+  "NOO SPORT": {
+   "count": 11
+  },
+  "KULINER LEGEND LM": {
+   "count": 8
+  },
+  "NOO FOODCOURT LUAR MALL": {
+   "count": 5
+  },
+  "DTW": {
+   "count": 4
+  },
+  "SPORT": {
+   "count": 4
+  },
+  "NOO UNIVERSITAS TPH LS": {
+   "count": 3
+  },
+  "NOO KULINER TPH BAKSO": {
+   "count": 3
+  },
+  "FOODCOURT": {
+   "count": 2
+  },
+  "KULINER LEGEND TPH": {
+   "count": 2
+  },
+  "NOO KULINER LUAR LM": {
+   "count": 1
+  },
+  "KULINER/DTW VIRAL": {
+   "count": 1
+  },
+  "NOO KULINER SOTO SATE TPH": {
+   "count": 1
+  },
+  "NOO TAKEOVER TPH": {
+   "count": 1
+  },
+  "BUNDLING KULINER ANAK MUDA": {
+   "count": 1
+  },
+  "NOO DTW": {
+   "count": 1
+  },
+  "NOO KULINER LEGENDD TPH": {
+   "count": 1
+  },
+  "NOO LOKPEN": {
+   "count": 1
+  },
+  "NOO KULINER  LEGEND TPH": {
+   "count": 1
+  },
+  "NOO KULINER LEGEND  LM": {
+   "count": 1
+  },
+  "NOO KULNER LEGEND LM": {
+   "count": 1
+  },
+  "NOO KULINER  LEGEND LM": {
+   "count": 1
+  },
+  "NOO KULINER LEGEND NM": {
+   "count": 1
+  },
+  "SEKOLAH TPH": {
+   "count": 1
+  },
+  "JL. RAYA LETNAN SUKARNA, BOJONG RANGKAS, KEC. CIAMPEA": {
+   "count": 1
+  },
+  "NOO SMA/SMP LM": {
+   "count": 1
+  },
+  "NOO DTW/POI": {
+   "count": 1
+  }
+ },
+ "visit_status": {
+  "BELUM DIVISIT": 987,
+  "DEAL": 759,
+  "NO DEAL": 725,
+  "PROSES": 235
+ },
+ "expiring": {
+  "expired": 1157,
+  "d30": 168,
+  "d60": 178,
+  "d90": 154,
+  "d180": 297,
+  "later": 715,
+  "unknown": 37
+ },
+ "noo_historis": {
+  "BELUM ADA": 3153,
+  "PERNAH DILIBATKAN": 1700,
+  "ADA PROGRESS/DEAL": 298
+ },
+ "monthly_omset": [
+  {
+   "bulan": "2025-01",
+   "omset": 4376680098
+  },
+  {
+   "bulan": "2025-02",
+   "omset": 4149499217
+  },
+  {
+   "bulan": "2025-03",
+   "omset": 5570031450
+  },
+  {
+   "bulan": "2025-04",
+   "omset": 3981430762
+  },
+  {
+   "bulan": "2025-05",
+   "omset": 5655361657
+  },
+  {
+   "bulan": "2025-06",
+   "omset": 7265831376
+  },
+  {
+   "bulan": "2025-07",
+   "omset": 6136659677
+  },
+  {
+   "bulan": "2025-08",
+   "omset": 6460268949
+  },
+  {
+   "bulan": "2025-09",
+   "omset": 7741596772
+  },
+  {
+   "bulan": "2025-10",
+   "omset": 6964948646
+  },
+  {
+   "bulan": "2025-11",
+   "omset": 8335458545
+  },
+  {
+   "bulan": "2025-12",
+   "omset": 10321299395
+  },
+  {
+   "bulan": "2026-01",
+   "omset": 7688804490
+  },
+  {
+   "bulan": "2026-02",
+   "omset": 8641064501
+  },
+  {
+   "bulan": "2026-03",
+   "omset": 8937996554
+  },
+  {
+   "bulan": "2026-04",
+   "omset": 10331910916
+  },
+  {
+   "bulan": "2026-05",
+   "omset": 2407094865
+  },
+  {
+   "bulan": "2026-06",
+   "omset": 2879389221
+  },
+  {
+   "bulan": "2026-07",
+   "omset": 2799848506
+  },
+  {
+   "bulan": "2026-08",
+   "omset": 1850247940
+  },
+  {
+   "bulan": "2026-09",
+   "omset": 686771592
+  },
+  {
+   "bulan": "2026-10",
+   "omset": 0
+  },
+  {
+   "bulan": "2026-11",
+   "omset": 0
+  },
+  {
+   "bulan": "2026-12",
+   "omset": 0
+  }
+ ]
+}
